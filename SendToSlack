@@ -1,0 +1,76 @@
+function Done_Dolist(row, doValue) {
+  
+  //C,,,셀에 O표시가 되면 보낼 알람 
+  //사용자 선택 [2~15(Danpatpang),16~29(Foxtail), 30~43(boribap)] + O표시가 된 셀의 왼쪽셀의 내용 + "Done" 이라는 문구 를 return 하는 함수 생성
+  var final;
+  
+  if( row >= 2 && row <= 15 ){
+    final = "Danpatpang : " + "<" + doValue + ">" + " DONE!";
+  }else if( row >=16 && row <=29 ){
+    final = "Foxtail : " + "<" + doValue + ">" + " DONE!";
+  }else if( row >=30 && row <= 43 ){
+    final = "Boribap : " + "<" + doValue + ">" + " DONE!";
+  }
+  
+  return final;
+}
+
+function onEdit(e) {
+  var column = e.range.getColumn();
+  var row = e.range.getRow();
+  var cell = e.range.getA1Notation();
+  var cellValue = e.range.getValue();
+  
+  //O 표시가 될 열의 순서 번호 (C,E,...)
+  var allColumns = [3,5,7,9,11,13,15];
+
+  
+  //allColumns에 해당하는 column일 경우에는 if문 안으로 들어감.
+  //indexOf()는 해당 배열에서 ()안의 것을 찾고 그 인덱스를 리턴한다. 
+  if(allColumns.indexOf(column) > -1){
+    //해당 column의 row중에서 O으로 바뀌는 셀이 있다면 trigger걸기 
+    if(cellValue == 'O'){
+      Logger.log(cell);
+      
+      var col = ['C','E','G','I','K','M','P'];
+      var preCol = ['B','D','F','H','J','L','N'];
+      var split1 = cell.substring(0,1);
+      var split2 = cell.substring(1);
+      var num = col.indexOf(split1);
+      split1 = preCol[num] + split2;
+      split1 = String(split1);
+      Logger.log(split1);
+  
+      var sheet = SpreadsheetApp.getActive();
+      var doRange = sheet.getRange(split1);
+      var doValue = doRange.getValue();
+     
+      Alarm(row, doValue);
+    }
+  }
+}
+
+function Alarm(row, doValue) {
+  
+  var url = ""
+  
+  var payload = {
+    "channel" : "#goodjop",
+    "usrname" : "boribap",
+    "text" : Done_Dolist(row, doValue)
+  }
+  SendToSlack(url,payload)
+}
+
+
+function SendToSlack(url, payload) {
+  
+  var options = {
+    "method" : "post",
+    "contentType" : "application/json",
+    "payload" : JSON.stringify(payload)
+  };
+  
+  return UrlFetchApp.fetch(url, options)
+  
+}
