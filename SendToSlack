@@ -55,7 +55,7 @@ function Alarm(row, doValue) {
   var url = ""
   
   var payload = {
-    "channel" : "#goodjop",
+    "channel" : "",
     "usrname" : "boribap",
     "text" : Done_Dolist(row, doValue)
   }
