@@ -51,11 +51,11 @@ function onEdit(e) {
 }
 
 function Alarm(row, doValue) {
-  
-  var url = ""
+ 
+  var url = " "
   
   var payload = {
-    "channel" : "",
+    "channel" : "#goodjop",
     "usrname" : "boribap",
     "text" : Done_Dolist(row, doValue)
   }
