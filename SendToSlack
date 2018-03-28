@@ -32,7 +32,7 @@ function onEdit(e) {
     if(cellValue == 'O'){
       Logger.log(cell);
       
-      var col = ['C','E','G','I','K','M','P'];
+      var col = ['C','E','G','I','K','M','O'];
       var preCol = ['B','D','F','H','J','L','N'];
       var split1 = cell.substring(0,1);
       var split2 = cell.substring(1);
